@@ -2774,6 +2774,8 @@ type StageProps = {
   environment?: PresetsType | Partial<EnvironmentProps>
   /** The lighting intensity, default: 0.5 */
   intensity?: number
+  /** Controls whether the children are centered or not, default: true */
+  center?: boolean
 }
 ```
 

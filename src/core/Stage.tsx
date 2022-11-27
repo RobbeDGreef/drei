@@ -60,6 +60,8 @@ type StageProps = {
   environment?: PresetsType | Partial<EnvironmentProps>
   /** The lighting intensity, default: 0.5 */
   intensity?: number
+  /** Optionally controls whether the children are centered or not, default: true */
+  center?: boolean
 }
 
 function Refit({ radius, adjustCamera }) {
@@ -77,6 +79,7 @@ export function Stage({
   shadows = 'contact',
   environment = 'city',
   preset = 'rembrandt',
+  center = true,
   ...props
 }: JSX.IntrinsicElements['group'] & StageProps) {
   const config = typeof preset === 'string' ? presets[preset] : preset
@@ -108,14 +111,15 @@ export function Stage({
       />
       <Bounds fit={!!adjustCamera} clip={!!adjustCamera} margin={Number(adjustCamera)} observe {...props}>
         <Refit radius={radius} adjustCamera={adjustCamera} />
-        <Center
+        {center ? (<Center
           position={[0, shadowOffset / 2, 0]}
           onCentered={({ width, height, depth, boundingSphere, ...data }) =>
             set({ radius: boundingSphere.radius, width, height, depth })
           }
         >
           {children}
-        </Center>
+        </Center>)
+        : {children} }
       </Bounds>
       <group position={[0, -height / 2 - shadowOffset / 2, 0]}>
         {contactShadow && (
